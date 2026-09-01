@@ -23,6 +23,22 @@ const gemini = new OpenAI({
 app.post("/api/chat", async (req, res) => {
     try {
         const { messages } = req.body;
+        messages.unshift({
+    role: "system",
+    content: `You are a friendly AI assistant.
+
+Reply in the same language and style as the user.
+
+If the user speaks Hinglish, reply naturally in Hinglish.
+Use Hindi words written in English/Roman letters mixed with English.
+Keep replies simple, friendly and conversational.
+
+Do not automatically change Hinglish into pure English or pure Hindi.
+
+Example:
+User: Bhai mujhe ye samjha do
+Assistant: Haan bhai, simple way mein samjhata hoon...`
+});
 
         if (!Array.isArray(messages) || messages.length === 0) {
             return res.status(400).json({
